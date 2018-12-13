@@ -15,11 +15,11 @@ app.use((req, res, next) => {
     var log = `${now} : ${req.method} ${req.url}`;
 
     fs.appendFile('server.log', log + '\n', (obj) => {
-        if(obj != null){
+        if (obj != null) {
             console.log('unnable to write log.', obj);
         }
     });
-    
+
     next();
 });
 
@@ -57,6 +57,33 @@ app.get('/bad', (req, res) => {
     res.send({
         errorMessage: 'unnable to locate'
     });
+});
+
+
+var users = [];
+users.push({ id: 1, name: "guilherme" });
+users.push({ id: 2, name: "danilo" });
+
+app.get('/api/user', (req, res) => {
+
+    res.send({
+        users: users
+    });
+
+});
+
+app.get('/api/user/:searchById', (req, res) => {
+
+    var reqId = req.query.id;
+
+    var ret = users.filter((user) => {
+        return user.id == reqId;
+    });
+
+    res.send({
+        users: ret
+    });
+
 });
 
 
